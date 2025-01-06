@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypertensive Retinopathy Risk Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .low-risk {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .high-risk {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Moderate to Severe Hypertensive Retinopathy Risk Calculator based on KNHANES 2008-2011</h1>
+    <form id="hr-form">
+        <label for="he_sbp">Systolic Blood Pressure (HE_sbp, mmHg):</label>
+        <input type="number" id="he_sbp" name="he_sbp" required>
+
+        <label for="he_dbp">Diastolic Blood Pressure (HE_dbp, mmHg):</label>
+        <input type="number" id="he_dbp" name="he_dbp" required>
+
+        <label for="he_glu">Fasting Glucose (HE_glu, mg/dL):</label>
+        <input type="number" id="he_glu" name="he_glu" required>
+
+        <label for="he_bun">Blood Urea Nitrogen (HE_BUN, mg/dL):</label>
+        <input type="number" id="he_bun" name="he_bun" required>
+
+        <label for="he_crea">Creatinine (HE_crea, mg/dL):</label>
+        <input type="number" id="he_crea" name="he_crea" required>
+
+        <button type="button" onclick="calculateRisk()">Calculate Risk</button>
+    </form>
+
+    <div id="result" class="low-risk">
+        Enter values and click "Calculate Risk" to see the result.
+    </div>
+
+    <script>
+        function calculateRisk() {
+            const he_sbp = parseFloat(document.getElementById('he_sbp').value);
+            const he_dbp = parseFloat(document.getElementById('he_dbp').value);
+            const he_glu = parseFloat(document.getElementById('he_glu').value);
+            const he_bun = parseFloat(document.getElementById('he_bun').value);
+            const he_crea = parseFloat(document.getElementById('he_crea').value);
+
+            // Logistic regression equation
+            const intercept = -10.402;
+            const b_he_sbp = 0.034;
+            const b_he_dbp = -0.038;
+            const b_he_glu = 0.032;
+            const b_he_bun = 0.075;
+            const b_he_crea = 0.405;
+
+            const logit = intercept + (b_he_sbp * he_sbp) + (b_he_dbp * he_dbp) + (b_he_glu * he_glu) + (b_he_bun * he_bun) + (b_he_crea * he_crea);
+            const probability = 1 / (1 + Math.exp(-logit));
+
+            const cutoff = 0.0138;
+            const resultElement = document.getElementById('result');
+
+            if (probability > cutoff) {
+                resultElement.innerHTML = `
+                    <strong>Probability:</strong> ${probability.toFixed(4)}<br>
+                    <strong>Risk Assessment:</strong> High risk of hypertensive retinopathy
+                `;
+                resultElement.className = 'high-risk';
+            } else {
+                resultElement.innerHTML = `
+                    <strong>Probability:</strong> ${probability.toFixed(4)}<br>
+                    <strong>Risk Assessment:</strong> Low risk of hypertensive retinopathy
+                `;
+                resultElement.className = 'low-risk';
+            }
+        }
+    </script>
+</body>
+</html>
