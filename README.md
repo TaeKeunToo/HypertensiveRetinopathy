@@ -49,5 +49,5 @@ KNHANES is a high-quality, representative dataset of the Korean population. It p
 This calculator is based on data and insights from the KNHANES (2008-2011) survey. We thank the KDCA and the Korean Ophthalmologic Society for their contributions to data quality and analysis.
 
 ## Contact
-For questions or further information, please contact [Your Email or Organization].
+For questions or further information, please contact [eyetaekeunyoo at gmail.com].
 
