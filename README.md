@@ -4,26 +4,23 @@ This web-based calculator predicts the probability of hypertensive retinopathy (
 
 ## Features
 1. **Input Variables:**
-   - **Systolic Blood Pressure (HE_sbp)**: Enter in mmHg.
-   - **Diastolic Blood Pressure (HE_dbp)**: Enter in mmHg.
-   - **Fasting Glucose (HE_glu)**: Enter in mg/dL.
-   - **Blood Urea Nitrogen (HE_BUN)**: Enter in mg/dL.
-   - **Creatinine (HE_crea)**: Enter in mg/dL.
+    Age (years)
+    Systolic Blood Pressure (HE_sbp, mmHg)
+    HbA1c (HE_HbA1c, %)
+    Total Cholesterol (HE_chol, mg/dL)
+    Creatinine (HE_crea, mg/dL)
+    Hemoglobin (HE_HB, g/dL)
 
 2. **Risk Assessment:**
    - Calculates the probability of hypertensive retinopathy using the logistic regression equation.
-   - Displays the probability and assesses risk as either "Low Risk" or "High Risk".
-   - Results are color-coded:
-     - **Green:** Low risk.
-     - **Red:** High risk.
-
-3. **Logistic Regression Equation:**
-   
-   \[
-   \text{Logit(P)} = -10.402 + (0.034 \times HE\_sbp) - (0.038 \times HE\_dbp) + (0.032 \times HE\_glu) + (0.075 \times HE\_BUN) + (0.405 \times HE\_crea)
-   \]
-
-   The cutoff probability for high risk is 0.0138.
+   - Risk categories are based on calibrated thresholds:
+    High Risk: Probability > 0.0648 (top 1%)
+    Moderate Risk: 0.0229 < Probability ≤ 0.0648 (top 10%)
+    Low Risk: Probability ≤ 0.0229
+   - Risk levels are color-coded for clarity:
+    🟥 Red: High risk
+    🟨 Yellow: Moderate risk
+    🟩 Green: Low risk
 
 ## Dataset
 The model is based on the KNHANES 2008-2011 dataset, which is a nationwide, cross-sectional survey conducted by the Korea Disease Control and Prevention Agency (KDCA). This dataset includes comprehensive health information, such as:
